@@ -18,7 +18,6 @@ namespace Tic_Tac_Toe
 
             while (!gameEnd)
             {
-                // need to check the board state
                 while (!player1TurnHandled)
                 {
                     Console.Write("Player 1 enter a coord x,y to place your X or enter 'q' to give up: ");
@@ -40,6 +39,19 @@ namespace Tic_Tac_Toe
             }
         }
 
+        static void CheckBoardForDraw(string[,] board)
+        {
+            if (board[0, 0] != "." && board[0, 1] != "." && board[0, 2] != "." && board[1, 0] != "." &&
+                board[1, 1] != "." && board[1, 2] != "." && board[2, 0] != "." && board[2, 1] != "." &&
+                board[2, 2] != ".")
+            {
+                Console.WriteLine("Game has a draw.");
+                PrintBoard(board);
+                System.Environment.Exit(1);
+            }
+
+        }
+
         static bool HandlePlayerCommand(string coord, string[,] board, string player) {
             bool playHandled = false;
             bool invalidInput = IsInvalid(coord);
@@ -49,6 +61,7 @@ namespace Tic_Tac_Toe
             int[] coordArray = coord.Split(',').Select(n => Convert.ToInt32(n)).ToArray();
             coordArray[0] = coordArray[0] - 1;
             coordArray[1] = coordArray[1] - 1;
+            
 
             if (!IsBoardElementTaken(board, coordArray))
             {
@@ -109,6 +122,7 @@ namespace Tic_Tac_Toe
             // 0,0 0,1 0,2
             // 1,0 1,1 1,2
             // 2,0 2,1 2,2
+            CheckBoardForDraw(board);
             
             if((board[0,0] == player && board[0,1] == player && board[0,2] == player))
             {
