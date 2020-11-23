@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -14,24 +14,30 @@ namespace Tic_Tac_Toe
             
             Boolean gameEnd = false;
             Boolean player1TurnHandled = false;
+            Boolean player2TurnHandled = false;
 
-            // while(!gameEnd){ // need to check the board state
-            while (!player1TurnHandled)
+            while (!gameEnd)
             {
-                 Console.Write("Player 1 enter a coord x,y to place your X or enter 'q' to give up: "); 
-                 string player1Coord = Console.ReadLine();
-                 player1TurnHandled = HandlePlayerCommand(player1Coord, board, "X");
+                // need to check the board state
+                while (!player1TurnHandled)
+                {
+                    Console.Write("Player 1 enter a coord x,y to place your X or enter 'q' to give up: ");
+                    string player1Coord = Console.ReadLine();
+                    player1TurnHandled = HandlePlayerCommand(player1Coord, board, "X");
+                    
+                }
+
+                while (!player2TurnHandled)
+                {
+                    Console.Write("Player 2 enter a coord x,y to place your O or enter 'q' to give up: ");
+                    string player2Coord = Console.ReadLine();
+                    player2TurnHandled = HandlePlayerCommand(player2Coord, board, "O");
+                }
+
+                player1TurnHandled = false;
+                player2TurnHandled = false;
+                // gameEnd = true;
             }
-
-            Console.Write("Player 2 enter a coord x,y to place your O or enter 'q' to give up: ");
-            string player2Coord = Console.ReadLine();
-            HandlePlayerCommand(player2Coord, board, "O");
-            
-            player1TurnHandled = true;
-            // gameEnd = true;
-
-            // }
-
         }
 
         static bool HandlePlayerCommand(string coord, string[,] board, string player) {
@@ -91,7 +97,7 @@ namespace Tic_Tac_Toe
             return false;
         }
 
-        static Boolean IsBoardElementTaken(string[,] board, int[] coordArray) {
+        static bool IsBoardElementTaken(string[,] board, int[] coordArray) {
             if (board[coordArray[0], coordArray[1]] != ".") {
                 Console.WriteLine("Oh no, a piece is already at this place! Try again...");
                 return true;
@@ -99,11 +105,42 @@ namespace Tic_Tac_Toe
             return false;
         }
         
-        static Boolean CheckBoardForWin(string[,] board, string player) {
-            for(int i = 0; i < 3; i++){
-                for(int j = 0; j<3; j++){
-                    
-                }
+        static bool CheckBoardForWin(string[,] board, string player) {
+            // 0,0 0,1 0,2
+            // 1,0 1,1 1,2
+            // 2,0 2,1 2,2
+            
+            if((board[0,0] == player && board[0,1] == player && board[0,2] == player))
+            {
+                return true;
+            }
+            if((board[1,0] == player && board[1,1] == player && board[1,2] == player))
+            {
+                return true;
+            }
+            if((board[2,0] == player && board[2,1] == player && board[2,2] == player))
+            {
+                return true;
+            }
+            if((board[0,0] == player && board[1,0] == player && board[2,0] == player))
+            {
+                return true;
+            }
+            if((board[0,1] == player && board[1,1] == player && board[2,1] == player))
+            {
+                return true;
+            }
+            if((board[0,2] == player && board[1,2] == player && board[2,2] == player))
+            {
+                return true;
+            }
+            if((board[0,0] == player && board[1,1] == player && board[2,2] == player))
+            {
+                return true;
+            }
+            if((board[0,2] == player && board[1,1] == player && board[2,0] == player))
+            {
+                return true;
             }
             return false;
         }
