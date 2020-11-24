@@ -10,7 +10,7 @@ namespace Tic_Tac_Toe
         {
             Console.WriteLine("Welcome to Tic Tac Toe! \nHere's the current board: ");
             string[,] board = {{".", ".", "."}, {".", ".", "."}, {".", ".", "."}};
-            PrintBoard(board); // prints initial new board
+            PrintBoard(board);
 
             var currentPlayer = "X";
             var gameStatus = GameStatus.InGame;
@@ -40,7 +40,6 @@ namespace Tic_Tac_Toe
                 PrintBoard(board);
                 currentPlayer = currentPlayer == "X" ? "O" : "X";
             }
-                
         }
 
         private static GameStatus HandlePlayerTurn(string currentPlayer, string[,] board)
@@ -58,10 +57,8 @@ namespace Tic_Tac_Toe
                 }
                 hasPlayerMadeValidMove = HasPlayerMadeMove(playerCoord, board, currentPlayer);
             }
-
             return CheckBoardForWin(board, currentPlayer);
         }
-
 
         private static bool HasPlayerMadeMove(string coord, string[,] board, string player)
         {
@@ -81,9 +78,13 @@ namespace Tic_Tac_Toe
             coordArray[1] = coordArray[1] - 1;
 
             if (!IsBoardElementTaken(board, coordArray))
+            {
                 board[coordArray[0], coordArray[1]] = player;
+            }
             else
+            {
                 return false;
+            }
             return true;
         }
 
@@ -112,36 +113,43 @@ namespace Tic_Tac_Toe
         private static GameStatus CheckBoardForWin(string[,] board, string player)
         {
             if ((board[0, 0] == player && board[0, 1] == player && board[0, 2] == player))
+            {
                 return GameStatus.Win;
-
+            }
             if ((board[1, 0] == player && board[1, 1] == player && board[1, 2] == player))
+            {
                 return GameStatus.Win;
-
+            }
             if ((board[2, 0] == player && board[2, 1] == player && board[2, 2] == player))
+            {
                 return GameStatus.Win;
-
+            }
             if ((board[0, 0] == player && board[1, 0] == player && board[2, 0] == player))
+            {
                 return GameStatus.Win;
-
+            }
             if ((board[0, 1] == player && board[1, 1] == player && board[2, 1] == player))
+            {
                 return GameStatus.Win;
-
+            }
             if ((board[0, 2] == player && board[1, 2] == player && board[2, 2] == player))
+            {
                 return GameStatus.Win;
-
+            }
             if ((board[0, 0] == player && board[1, 1] == player && board[2, 2] == player))
+            {
                 return GameStatus.Win;
-
+            }
             if ((board[0, 2] == player && board[1, 1] == player && board[2, 0] == player))
+            {
                 return GameStatus.Win;
-
+            }
             if (board[0, 0] != "." && board[0, 1] != "." && board[0, 2] != "." && board[1, 0] != "." &&
                 board[1, 1] != "." && board[1, 2] != "." && board[2, 0] != "." && board[2, 1] != "." &&
                 board[2, 2] != ".")
             {
                 return GameStatus.Draw;
             }
-
             return GameStatus.InGame;
         }
     }
