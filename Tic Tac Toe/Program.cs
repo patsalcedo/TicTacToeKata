@@ -12,10 +12,6 @@ namespace Tic_Tac_Toe
             string[,] board = {{".", ".", "."}, {".", ".", "."}, {".", ".", "."}};
             PrintBoard(board); // prints initial new board
 
-            // var gameEnd = false;
-            // var player1TurnHandled = false;
-            // var player2TurnHandled = false;
-            
             var currentPlayer = "X";
             var playerTurnHandled = false;
             
@@ -23,12 +19,7 @@ namespace Tic_Tac_Toe
             {
                 while (!playerTurnHandled)
                 {
-                    var player = "";
-                    // if (currentPlayer == "X")
-                    //     player = "1";
-                    // else
-                    //     player = "2";
-                    player = currentPlayer == "X" ? "1" : "2";
+                    var player = currentPlayer == "X" ? "1" : "2";
                     Console.Write("Player " + player + " enter a coord x,y to place your " + currentPlayer + " or enter 'q' to give up: ");
                     var playerCoord = Console.ReadLine();
                     playerTurnHandled = HasPlayerMadeMove(playerCoord, board, currentPlayer);
@@ -44,35 +35,8 @@ namespace Tic_Tac_Toe
                     PrintBoard(board);
                     Environment.Exit(1);
                 }
-                
-                // CheckBoard(board, currentPlayer);
-                // if (currentPlayer == "X")
-                //     currentPlayer = "O";
-                // else
-                //     currentPlayer = "X";
                 currentPlayer = currentPlayer == "X" ? "O" : "X";
-
                 playerTurnHandled = false;
-
-                // while (!player1TurnHandled)
-                // {
-                //     Console.Write("Player 1 enter a coord x,y to place your X or enter 'q' to give up: ");
-                //     var player1Coord = Console.ReadLine();
-                //     player1TurnHandled = HandlePlayerCommand(player1Coord, board, "X");
-                // }
-                // CheckBoard(board, "X");
-                //
-                // while (!player2TurnHandled)
-                // {
-                //     Console.Write("Player 2 enter a coord x,y to place your O or enter 'q' to give up: ");
-                //     var player2Coord = Console.ReadLine();
-                //     player2TurnHandled = HandlePlayerCommand(player2Coord, board, "O");
-                // }
-                // CheckBoard(board, "O");
-
-                // player1TurnHandled = false;
-                // player2TurnHandled = false;
-                // gameEnd = true;
             }
         }
 
@@ -134,23 +98,8 @@ namespace Tic_Tac_Toe
             }
             return false;
         }
-//TODO get rid of this method
-private static void CheckBoard(string[,] board, string player)
-        {
-            if (!CheckBoardForWin(board, player))
-            {
-                Console.WriteLine("Move accepted, here's the current board: ");
-                PrintBoard(board);
-            }
-            else
-            {
-                Console.WriteLine("Move accepted, well done you've won the game!");
-                PrintBoard(board);
-                Environment.Exit(1);
-            }
-        }
 
-private static bool CheckBoardForWin(string[,] board, string player)
+        private static bool CheckBoardForWin(string[,] board, string player)
         {
             CheckBoardForDraw(board);
 
@@ -181,7 +130,7 @@ private static bool CheckBoardForWin(string[,] board, string player)
             return false;
         }
 
-private static void CheckBoardForDraw(string[,] board)
+        private static void CheckBoardForDraw(string[,] board)
         {
             if (board[0, 0] != "." && board[0, 1] != "." && board[0, 2] != "." && board[1, 0] != "." &&
                 board[1, 1] != "." && board[1, 2] != "." && board[2, 0] != "." && board[2, 1] != "." &&
