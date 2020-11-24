@@ -4,6 +4,7 @@ namespace Tic_Tac_Toe
     {
         Win,
         Draw,
-        InGame
+        InGame,
+        Aborted
     }
 }

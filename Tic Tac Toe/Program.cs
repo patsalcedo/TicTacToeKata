@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -13,22 +13,15 @@ namespace Tic_Tac_Toe
             PrintBoard(board); // prints initial new board
 
             var currentPlayer = "X";
-            var playerTurnHandled = false;
             var gameStatus = GameStatus.InGame;
 
             while (gameStatus == GameStatus.InGame)
             {
-                while (!playerTurnHandled)
+                gameStatus = HandlePlayerTurn(currentPlayer, board);
+                if (gameStatus == GameStatus.Aborted)
                 {
-                    var player = currentPlayer == "X" ? "1" : "2";
-                    Console.Write("Player " + player + " enter a coord x,y to place your " + currentPlayer +
-                                  " or enter 'q' to give up: ");
-                    var playerCoord = Console.ReadLine();
-                    playerTurnHandled = HasPlayerMadeMove(playerCoord, board, currentPlayer);
+                    break;
                 }
-
-
-                gameStatus = CheckBoardForWin(board, currentPlayer);
                 switch (gameStatus)
                 {
                     case GameStatus.InGame:
@@ -37,23 +30,52 @@ namespace Tic_Tac_Toe
                     case GameStatus.Win:
                         Console.WriteLine("Move accepted, well done you've won the game!");
                         break;
-                    default:
+                    case GameStatus.Draw:
                         Console.WriteLine("Game has a draw.");
+                        break;
+                    default:
+                        Console.WriteLine("You quit the game.");
                         break;
                 }
                 PrintBoard(board);
                 currentPlayer = currentPlayer == "X" ? "O" : "X";
-                playerTurnHandled = false;
             }
                 
         }
 
+        private static GameStatus HandlePlayerTurn(string currentPlayer, string[,] board)
+        {
+            var hasPlayerMadeValidMove = false;
+            while (!hasPlayerMadeValidMove)
+            {
+                var player = currentPlayer == "X" ? "1" : "2";
+                Console.Write("Player " + player + " enter a coord x,y to place your " + currentPlayer +
+                              " or enter 'q' to give up: ");
+                var playerCoord = Console.ReadLine();
+                if (playerCoord == "q")
+                {
+                    return GameStatus.Aborted;
+                }
+                hasPlayerMadeValidMove = HasPlayerMadeMove(playerCoord, board, currentPlayer);
+            }
+
+            return CheckBoardForWin(board, currentPlayer);
+        }
+
+
         private static bool HasPlayerMadeMove(string coord, string[,] board, string player)
         {
-            var invalidInput = IsInvalid(coord);
-            if (invalidInput)
+            if (String.IsNullOrEmpty(coord))
+            {
+                Console.WriteLine("Please enter coordinates.");
                 return false;
-
+            }
+            if (!Regex.IsMatch(coord, "^([1-3]),([1-3])$"))
+            {
+                Console.WriteLine("Please enter coordinates between 1 and 3 in the form x,y");
+                return false;
+            }
+            
             int[] coordArray = coord.Split(',').Select(n => Convert.ToInt32(n)).ToArray();
             coordArray[0] = coordArray[0] - 1;
             coordArray[1] = coordArray[1] - 1;
@@ -75,26 +97,6 @@ namespace Tic_Tac_Toe
                 }
                 Console.WriteLine();
             }
-        }
-
-        private static bool IsInvalid(string input)
-        {
-            if (String.IsNullOrEmpty(input))
-            {
-                Console.WriteLine("Please enter coordinates.");
-                return true;
-            }
-            if (input == "q")
-            {
-                Console.WriteLine("You have quit the game.");
-                Environment.Exit(1);
-            }
-            else if (!Regex.IsMatch(input, "^([1-3]),([1-3])$"))
-            {
-                Console.WriteLine("Please enter coordinates between 1 and 3 in the form x,y");
-                return true;
-            }
-            return false;
         }
 
         private static bool IsBoardElementTaken(string[,] board, int[] coordArray)
