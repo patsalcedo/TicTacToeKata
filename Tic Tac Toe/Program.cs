@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿﻿﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -10,7 +10,9 @@ namespace Tic_Tac_Toe
         {
             Console.WriteLine("Welcome to Tic Tac Toe! \nHere's the current board: ");
             string[,] board = {{".", ".", "."}, {".", ".", "."}, {".", ".", "."}};
-            PrintBoard(board);
+            // PrintBoard(board);
+            var aBoard = new Board(9);
+            aBoard.PrintBoard();
 
             var currentPlayer = "X";
             var gameStatus = GameStatus.InGame;
@@ -90,15 +92,18 @@ namespace Tic_Tac_Toe
 
         private static void PrintBoard(string[,] board)
         {
-            for (var i = 0; i < 3; i++)
+            var boardLength = Math.Sqrt(board.Length);
+            for (var i = 0; i < boardLength; i++)
             {
-                for (var j = 0; j < 3; j++)
+                for (var j = 0; j < boardLength; j++)
                 {
                     Console.Write(board[i, j] + " ");
                 }
                 Console.WriteLine();
             }
         }
+
+        
 
         private static bool IsBoardElementTaken(string[,] board, int[] coordArray)
         {
@@ -113,37 +118,29 @@ namespace Tic_Tac_Toe
         private static GameStatus CheckBoardForWin(string[,] board, string player)
         {
             if ((board[0, 0] == player && board[0, 1] == player && board[0, 2] == player))
-            {
                 return GameStatus.Win;
-            }
+
             if ((board[1, 0] == player && board[1, 1] == player && board[1, 2] == player))
-            {
                 return GameStatus.Win;
-            }
+
             if ((board[2, 0] == player && board[2, 1] == player && board[2, 2] == player))
-            {
                 return GameStatus.Win;
-            }
+
             if ((board[0, 0] == player && board[1, 0] == player && board[2, 0] == player))
-            {
                 return GameStatus.Win;
-            }
+
             if ((board[0, 1] == player && board[1, 1] == player && board[2, 1] == player))
-            {
                 return GameStatus.Win;
-            }
+
             if ((board[0, 2] == player && board[1, 2] == player && board[2, 2] == player))
-            {
                 return GameStatus.Win;
-            }
+
             if ((board[0, 0] == player && board[1, 1] == player && board[2, 2] == player))
-            {
                 return GameStatus.Win;
-            }
+
             if ((board[0, 2] == player && board[1, 1] == player && board[2, 0] == player))
-            {
                 return GameStatus.Win;
-            }
+
             if (board[0, 0] != "." && board[0, 1] != "." && board[0, 2] != "." && board[1, 0] != "." &&
                 board[1, 1] != "." && board[1, 2] != "." && board[2, 0] != "." && board[2, 1] != "." &&
                 board[2, 2] != ".")
